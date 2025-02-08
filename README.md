@@ -1,2 +1,0 @@
-# KidosDomain
-My General Website
