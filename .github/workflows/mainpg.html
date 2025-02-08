@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kido's Domain</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: url('mainbg.png') center/cover no-repeat;
+            background-position: center top; /* Adjusts positioning */
+            color: #00ff00;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bg-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('mainbg.png') center/cover no-repeat;
+            filter: blur(3.5px); /* Adds blur effect */
+            z-index: -1; /* Keeps it behind all other content */
+        }
+        .container {
+            z-index: 2;
+            max-width: 700px;
+            margin: auto;
+            background: black;
+            padding: 30px;
+            border: 4px solid #ff00ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff00ff;
+            position: relative;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 2px 2px #ff00ff;
+        }
+
+        .description {
+            font-size: 14px;
+            margin: 10px 0 20px;
+            color: #ffcc00;
+            text-shadow: 1px 1px #ff00ff;
+        }
+
+        .social-links {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 3;
+        }
+
+        .social-links a {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background: black;
+            border: 3px solid #ff00ff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ff00ff;
+            text-align: center;
+            font-size: 10px;
+            color: #00ff00;
+            min-width: 80px;
+            max-width: 150px;
+            white-space: normal;
+            word-wrap: break-word;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .social-links a img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            background: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .social-links a::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            width: 250px;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Press Start 2P', cursive;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-blur"></div>
+    <div class="overlay"></div>
+    <div class="container">
+        <img src="profile2.png" alt="Profile Picture" class="profile-img">
+        <div class="title">Kido Catto</div>
+        <div class="description">You already know what I do if you are here</div>
+    </div>
+    <div class="social-links">
+        <a href="https://twitter.com/kidocatto" target="_blank" data-text="Find my updates, streams, and ramblings here!">
+            <img src="twicon.jpg">
+            <span>Twitter</span>
+        </a>
+        <a href="https://drive.google.com" target="_blank" data-text="My public edits and projects.">
+            <img src="gdicon.png">
+            <span>Google Drive</span>
+        </a>
+        <a href="https://discord.gg/3dwMWfnB3C" target="_blank" data-text="The discord server for everything you need, from stream and twitter notifications to helping you find sources of any media!">
+            <img src="kdcicon.jpg">
+            <span>Kido's Discord</span>
+        </a>
+        <a href="https://discord.gg/blackeningwbs" target="_blank" data-text="Check out BLACKENING Discord, where am an admin and also do the streams!">
+            <img src="bdcicon.png">
+            <span>BLACKENING Discord</span>
+        </a>
+    </div>
+<script>
+    const buttons = document.querySelectorAll('.social-links a');
+    const buttonSize = 100;
+    let positions = [];
+    let velocities = [];
+    
+    const mainBox = document.querySelector('.container');
+    const mainBoxRect = mainBox.getBoundingClientRect();
+
+    const area = {
+        minX: 0,
+        maxX: window.innerWidth - buttonSize,
+        minY: 100,
+        maxY: window.innerHeight - buttonSize
+    };
+
+    // Ensure buttons do not spawn inside the big box
+    function isOverlappingMainBox(x, y) {
+        return (
+            x + buttonSize > mainBoxRect.left &&
+            x < mainBoxRect.right &&
+            y + buttonSize > mainBoxRect.top &&
+            y < mainBoxRect.bottom
+        );
+    }
+
+    function getSafePosition() {
+        let x, y;
+        let isOverlapping;
+        do {
+            x = Math.random() * (area.maxX - area.minX) + area.minX;
+            y = Math.random() * (area.maxY - area.minY) + area.minY;
+
+            isOverlapping = isOverlappingMainBox(x, y);
+            
+            // Check against other buttons
+            for (let pos of positions) {
+                const dx = pos.x - x;
+                const dy = pos.y - y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < buttonSize) {
+                    isOverlapping = true;
+                    break;
+                }
+            }
+        } while (isOverlapping);
+        return { x, y };
+    }
+
+    // Initialize positions and velocities
+    buttons.forEach((button, index) => {
+        let { x, y } = getSafePosition();
+        let speedX = (Math.random() - 0.5) * 1; // Random speed
+        let speedY = (Math.random() - 0.5) * 1;
+
+        positions.push({ x, y });
+        velocities.push({ speedX, speedY });
+
+        button.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    function moveButtons() {
+        for (let i = 0; i < buttons.length; i++) {
+            positions[i].x += velocities[i].speedX;
+            positions[i].y += velocities[i].speedY;
+
+            // Bounce off walls (old logic)
+                if (positions[i].x < area.minX || positions[i].x > area.maxX) velocities[i].speedX *= -1;
+                if (positions[i].y < area.minY || positions[i].y > area.maxY) velocities[i].speedY *= -1;
+
+
+            // Bounce off the big box
+            if (
+                positions[i].x + buttonSize > mainBoxRect.left &&
+                positions[i].x < mainBoxRect.right &&
+                positions[i].y + buttonSize > mainBoxRect.top &&
+                positions[i].y < mainBoxRect.bottom
+            ) {
+                // Determine overlap direction
+                const overlapLeft = positions[i].x + buttonSize - mainBoxRect.left;
+                const overlapRight = mainBoxRect.right - positions[i].x;
+                const overlapTop = positions[i].y + buttonSize - mainBoxRect.top;
+                const overlapBottom = mainBoxRect.bottom - positions[i].y;
+
+                const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+                if (minOverlap === overlapLeft || minOverlap === overlapRight) {
+                    velocities[i].speedX *= -1;
+                } else {
+                    velocities[i].speedY *= -1;
+                }
+            }
+
+            // Bounce off other buttons (FULL FIX for all 4)
+            for (let j = i + 1; j < buttons.length; j++) {
+                const dx = positions[i].x - positions[j].x;
+                const dy = positions[i].y - positions[j].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < buttonSize) {
+                    // Swap velocities for proper bouncing
+                    let tempSpeedX = velocities[i].speedX;
+                    let tempSpeedY = velocities[i].speedY;
+                    velocities[i].speedX = velocities[j].speedX;
+                    velocities[i].speedY = velocities[j].speedY;
+                    velocities[j].speedX = tempSpeedX;
+                    velocities[j].speedY = tempSpeedY;
+
+                    // Move buttons slightly apart to prevent overlap issues
+                    const angle = Math.atan2(dy, dx);
+                    const separationDistance = buttonSize - distance;
+
+                    positions[i].x += Math.cos(angle) * (separationDistance / 2);
+                    positions[i].y += Math.sin(angle) * (separationDistance / 2);
+                    positions[j].x -= Math.cos(angle) * (separationDistance / 2);
+                    positions[j].y -= Math.sin(angle) * (separationDistance / 2);
+                }
+            }
+
+            buttons[i].style.transform = `translate(${positions[i].x}px, ${positions[i].y}px)`;
+        }
+
+        requestAnimationFrame(moveButtons);
+    }
+
+    moveButtons();
+</script>
+</body>
+</html>
