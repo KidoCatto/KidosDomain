@@ -1,0 +1,293 @@
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: url('mainbg.png') center/cover no-repeat;
+            background-position: center top; /* Adjusts positioning */
+            color: #00ff00;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bg-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('mainbg.png') center/cover no-repeat;
+            filter: blur(3.5px); /* Adds blur effect */
+            z-index: -1; /* Keeps it behind all other content */
+        }
+        .container {
+            z-index: 2;
+            max-width: 700px;
+            margin: auto;
+            background: black;
+            padding: 30px;
+            border: 4px solid #ff00ff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #ff00ff;
+            position: relative;
+            text-align: center;
+        }
+        .button-container {
+            position: relative;
+            z-index: 4; /* Ensures buttons are above .social-links */
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 2px 2px #ff00ff;
+        }
+
+        .description {
+            font-size: 14px;
+            margin: 10px 0 20px;
+            color: #ffcc00;
+            text-shadow: 1px 1px #ff00ff;
+        }
+
+        .social-links {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            pointer-events: none; /* ✅ Don't block clicks BUT allow movement inside */
+        }
+
+        .social-links a {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: black;
+            border: 3px solid #ff00ff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ff00ff;
+            text-align: center;
+            font-size: 10px;
+            color: #00ff00;
+            cursor: pointer;
+            text-decoration: none;
+            pointer-events: auto; /* ✅ Allow links to be clickable again */
+            z-index: 11; /* ✅ Appear above most things */
+            transition: transform 0.2s;
+        }
+
+
+        .social-links a img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            background: #ff00ff;
+            box-shadow: 0 0 15px #ff00ff;
+        }
+
+        .social-links a::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #ffcc00;
+            padding: 10px;
+            border-radius: 5px;
+            width: 250px;
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Press Start 2P', cursive;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover::after {
+            opacity: 1;
+        }
+        .button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.static-button {
+    background: black;
+    color: #00ff00;
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+    padding: 10px 15px;
+    border: 3px solid #ff00ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-shadow: 1px 1px #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+    transition: all 0.3s ease;
+}
+
+.static-button:hover {
+    background: #ff00ff;
+    color: black;
+    box-shadow: 0 0 15px #ff00ff;
+    transform: scale(1.1);
+}
+/* ✅ Static Button Styling */
+.static-button {
+    background: black;
+    color: #00ff00;
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+    padding: 10px 15px;
+    border: 3px solid #ff00ff;
+    border-radius: 5px;
+    cursor: pointer;
+    text-shadow: 1px 1px #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+    transition: all 0.3s ease;
+}
+
+.static-button:hover {
+    background: #ff00ff;
+    color: black;
+    box-shadow: 0 0 15px #ff00ff;
+    transform: scale(1.1);
+}
+
+/* ✅ Social Links (Floating Buttons) */
+.social-links {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    pointer-events: none; /* ✅ Prevents interference when hidden */
+}
+
+/* ✅ Floating Buttons */
+.social-links a {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background: black;
+    border: 3px solid #ff00ff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ff00ff;
+    text-align: center;
+    font-size: 10px;
+    color: #00ff00;
+    min-width: 80px;
+    max-width: 150px;
+    white-space: normal;
+    word-wrap: break-word;
+    cursor: pointer;
+    text-decoration: none;
+    pointer-events: auto; /* ✅ Ensures buttons are clickable */
+    z-index: 10; /* ✅ Makes sure buttons appear above content */
+}
+
+.social-links a img {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+    background: #ff00ff;
+    box-shadow: 0 0 15px #ff00ff;
+}
+
+/* ✅ Tooltip on Hover */
+.social-links a::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #ffcc00;
+    padding: 10px;
+    border-radius: 5px;
+    width: 250px;
+    text-align: center;
+    font-size: 12px;
+    font-family: 'Press Start 2P', cursive;
+    border: 2px solid #ff00ff;
+    box-shadow: 0 0 10px #ff00ff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.social-links a:hover::after {
+    opacity: 1;
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.video-container {
+    background: transparent; /* ✅ No background */
+    padding: 0; /* ✅ Remove extra padding */
+    border-radius: 0;
+    position: relative;
+}
+
+.video-frame {
+    width: 100%;
+    height: 100%;
+    max-width: 800px; /* Adjust based on your preference */
+    max-height: 450px;
+    border: none; /* ✅ No border */
+}
+
+.close-video {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+    border-radius: 50%;
+    z-index: 1001;
+}
